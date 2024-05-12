@@ -18,6 +18,9 @@ default_platform(:ios)
 platform :ios do
   desc "Builds and deploys app to internal testing"
   lane :build_deploy_internal_test do
+
+    puts File.expand_path(".")
+    
     match(
       type: "appstore",
       app_identifier: "com.owenbean.usm",
@@ -31,7 +34,8 @@ platform :ios do
       }
     )
 
-    gym(scheme: "USMSocialMobile")
+    gym(
+      scheme: "USMSocialMobile")
 
     pilot(
       app_identifier: "com.owenbean.usm",
