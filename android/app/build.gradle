@@ -86,8 +86,8 @@ android {
     namespace "com.owenbean.usm"
     defaultConfig {
         applicationId 'com.owenbean.usm'
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion 28
+        targetSdkVersion 34
         versionCode project.hasProperty('versionCode') ? Integer.parseInt(project.versionCode) : 1
         versionName "1.0.0"
 
