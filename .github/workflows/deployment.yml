@@ -26,8 +26,10 @@ jobs:
         run: npm install
 
       - name: Build and deploy iOS app
-        run: fastlane build_deploy_internal_test
-        working-directory: ./ios
+        uses: maierj/fastlane-action@v3.1.0
+        with:
+          lane: build_deploy_internal_test
+          subdirectory: ios
         env:
           APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
           APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
@@ -73,8 +75,10 @@ jobs:
           gpg -d --passphrase "${{ secrets.GOOGLE_DECRYPT_API_KEY }}" --batch ./android/fastlane/google.gpg > ./android/fastlane/google.json
 
       - name: Build and deploy Android app
-        run: fastlane build_deploy_internal_test
-        working-directory: ./android
+        uses: maierj/fastlane-action@v3.1.0
+        with:
+          lane: build_deploy_internal_test
+          subdirectory: android
         env:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_STORE_FILE: ${{ secrets.ANDROID_STORE_FILE }}
