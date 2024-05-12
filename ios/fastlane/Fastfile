@@ -32,7 +32,9 @@ platform :ios do
       }
     )
 
-    sh("pod", "install")
+    cocoapods(
+      clean_install: true
+    )
 
     gym(scheme: "USMSocialMobile")
 
