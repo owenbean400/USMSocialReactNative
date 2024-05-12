@@ -1,0 +1,47 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Builds and deploys app to internal testing"
+  lane :build_deploy_internal_test do
+    match(
+      type: "appstore",
+      app_identifier: "com.owenbean.usm",
+      git_url: "git@github.com:owenbean400/USMSocialMediaIosAutomation.git",
+      git_private_key: ENV["GITHUB_DEPLOY_KEY"],
+      api_key: {
+        key_id: ENV["APPLE_API_KEY_ID"],
+        issuer_id: ENV["APPLE_API_ISSUER_ID"],
+        key_content: ENV["APPLE_API_KEY_CONTENT"],
+        in_house: false
+      }
+    )
+
+    gym(scheme: "USMSocialMobile")
+
+    pilot(
+      app_identifier: "com.owenbean.usm",
+      api_key: {
+        key_id: ENV["APPLE_API_KEY_ID"],
+        issuer_id: ENV["APPLE_API_ISSUER_ID"],
+        key_content: ENV["APPLE_API_KEY_CONTENT"],
+        in_house: false
+      },
+      skip_waiting_for_build_processing: true
+    )
+  end
+end

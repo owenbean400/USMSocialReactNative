@@ -1,0 +1,18 @@
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v4
+
+      - name: Build and deploy iOS app
+        run: fastlane build_deploy_internal_test
+        env:
+          APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
+          APPLE_API_ISSUER_ID: ${{ APPLE_API_ISSUER_ID }}
+          APPLE_API_KEY_CONTENT: ${{ APPLE_API_KEY_CONTENT }}
