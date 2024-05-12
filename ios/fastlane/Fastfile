@@ -26,7 +26,7 @@ platform :ios do
       api_key: {
         key_id: ENV["APPLE_API_KEY_ID"],
         issuer_id: ENV["APPLE_API_ISSUER_ID"],
-        key_content: ENV["APPLE_API_KEY_CONTENT"],
+        key: ENV["APPLE_API_KEY_CONTENT"],
         in_house: false
       }
     )
@@ -38,7 +38,7 @@ platform :ios do
       api_key: {
         key_id: ENV["APPLE_API_KEY_ID"],
         issuer_id: ENV["APPLE_API_ISSUER_ID"],
-        key_content: ENV["APPLE_API_KEY_CONTENT"],
+        key: ENV["APPLE_API_KEY_CONTENT"],
         in_house: false
       },
       skip_waiting_for_build_processing: true

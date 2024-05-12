@@ -14,5 +14,5 @@ jobs:
         run: fastlane build_deploy_internal_test
         env:
           APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
-          APPLE_API_ISSUER_ID: ${{ APPLE_API_ISSUER_ID }}
-          APPLE_API_KEY_CONTENT: ${{ APPLE_API_KEY_CONTENT }}
+          APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
+          APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY_CONTENT }}
