@@ -1,0 +1,55 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+
+  desc "Build and deploy to internal testing"
+  lane :build_deploy_internal_test do
+
+    google_track_internal = google_play_track_version_codes(
+      package_name: "com.owenbean.usm",
+      json_key: ENV["ANDROID_API_FILE"],
+      track: "internal"
+    )
+
+    gradle(
+      task: "clean"
+    )
+
+    gradle(
+      task: "bundle",
+      build_type: "Release",
+      properties: {
+        "android.injected.signing.store.file" => ENV["ANDROID_STORE_FILE"],
+        "android.injected.signing.store.password" => ENV["ANDROID_STORE_PASSWORD"],
+        "android.injected.signing.key.alias" => ENV["ANDROID_KEY_ALIAS"],
+        "android.injected.signing.key.password" => ENV["ANDROID_KEY_PASSWORD"],
+        "versionCode" => "#{google_track_internal[0] + 1}",
+        "org.gradle.java.home" => ENV['JAVA_HOME']
+      }
+    )
+
+    upload_to_play_store(
+      package_name: "com.owenbean.usm",
+      track: "internal",
+      release_status: "draft",
+      json_key: ENV["ANDROID_API_FILE"]
+    )
+
+  end
+
+end

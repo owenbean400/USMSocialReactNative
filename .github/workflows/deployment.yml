@@ -4,11 +4,18 @@ on:
       - main
 
 jobs:
-  build:
+  build_ios_app_deploy_internal_testing:
     runs-on: macos-latest
     steps:
       - name: Checkout codebase
         uses: actions/checkout@v4
+
+      - name: Setup ruby for Fastlane
+        uses: ruby/setup-ruby@v1.138.0
+        with:
+          ruby-version: 3.2.1
+          bundler-cache: true
+          working-directory: 'ios'
 
       - name: Setup Node
         uses: actions/setup-node@v1
@@ -27,3 +34,56 @@ jobs:
           APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY_CONTENT }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+  build_android_app_deploy_internal_testing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codebase
+        uses: actions/checkout@v4
+
+      - name: Setup java code
+        uses: actions/setup-java@v1
+        with:
+          java-version: "22.x"
+
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      - name: Setup ruby for Fastlane
+        uses: ruby/setup-ruby@v1.138.0
+        with:
+          ruby-version: 3.2.1
+          bundler-cache: true
+          working-directory: 'android'
+
+      - name: Install Node packages
+        run: npm install
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE_64 }}" > key.asc
+          openssl base64 -in key.asc -out /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/key.gpg -d
+          gpg -d --passphrase "${{ secrets.KEYSTORE_DECRYPT }}" --batch /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/key.gpg > /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/key.keystore
+
+      - name: Decode Google API Key
+        run: |
+          echo "${{ secrets.GOOGLE_BASE64_API_KEY }}" > google.asc
+          openssl base64 -in google.asc -out /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.gpg -d
+          gpg -d --passphrase "${{ secrets.GOOGLE_DECRYPT_API_KEY }}" --batch /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.gpg > /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.json
+
+      - name: Build and deploy Android app
+        run: fastlane build_deploy_internal_test
+        working-directory: ./ios
+        env:
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_STORE_FILE: ${{ secrets.ANDROID_STORE_FILE }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ANDROID_STORE_PASSWORD: ${{ secrets.ANDROID_STORE_PASSWORD }}
+          ANDROID_API_FILE: /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.json
+
+      - name: Upload artifact to Github
+        uses: actions/upload-artifact@v1
+        with:
+          name: release-aab
+          path: /home/runner/work/USMSocialMobile/USMSocialMobile/android/build/app/outputs/bundle/release/app-release.aab
