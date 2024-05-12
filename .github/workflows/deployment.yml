@@ -43,7 +43,7 @@ jobs:
       - name: Setup java code
         uses: actions/setup-java@v1
         with:
-          java-version: "22.x"
+          java-version: "20.x"
 
       - name: Setup Node
         uses: actions/setup-node@v1
