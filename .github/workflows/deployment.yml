@@ -19,4 +19,4 @@ jobs:
           APPLE_API_KEY_CONTENT: ${{ secrets.APPLE_API_KEY_CONTENT }}
           MATCH_PASSWORD: ${{ secrets.MATCH_PASSWORD }}
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
-          GYM_PROJECT: "../USMSocialMobile.xcodeproj"
+          GYM_PROJECT: "../"
