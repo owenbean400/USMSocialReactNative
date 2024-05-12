@@ -32,7 +32,8 @@ platform :ios do
       }
     )
 
-    puts File.expand_path(".")
+    sh("pod", "install")
+
     gym(scheme: "USMSocialMobile")
 
     pilot(
