@@ -12,6 +12,7 @@ jobs:
 
       - name: Build and deploy iOS app
         run: fastlane build_deploy_internal_test
+        working-directory: ./ios
         env:
           APPLE_API_KEY_ID: ${{ secrets.APPLE_API_KEY_ID }}
           APPLE_API_ISSUER_ID: ${{ secrets.APPLE_API_ISSUER_ID }}
