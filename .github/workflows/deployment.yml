@@ -13,7 +13,7 @@ jobs:
       - name: Setup ruby for Fastlane
         uses: ruby/setup-ruby@v1.138.0
         with:
-          ruby-version: 3.2.1
+          ruby-version: 3.3.1
           bundler-cache: true
           working-directory: 'ios'
 
@@ -63,14 +63,14 @@ jobs:
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE_64 }}" > key.asc
-          openssl base64 -in key.asc -out /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/key.gpg -d
-          gpg -d --passphrase "${{ secrets.KEYSTORE_DECRYPT }}" --batch /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/key.gpg > /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/key.keystore
+          openssl base64 -in key.asc -out ./android/fastlane/key.gpg -d
+          gpg -d --passphrase "${{ secrets.KEYSTORE_DECRYPT }}" --batch ./android/fastlane/key.gpg > ./android/fastlane/key.keystore
 
       - name: Decode Google API Key
         run: |
           echo "${{ secrets.GOOGLE_BASE64_API_KEY }}" > google.asc
-          openssl base64 -in google.asc -out /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.gpg -d
-          gpg -d --passphrase "${{ secrets.GOOGLE_DECRYPT_API_KEY }}" --batch /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.gpg > /home/runner/work/USMSocialMobile/USMSocialMobile/android/fastlane/google.json
+          openssl base64 -in google.asc -out ./android/fastlane/google.gpg -d
+          gpg -d --passphrase "${{ secrets.GOOGLE_DECRYPT_API_KEY }}" --batch ./android/fastlane/google.gpg > ./android/fastlane/google.json
 
       - name: Build and deploy Android app
         run: fastlane build_deploy_internal_test
