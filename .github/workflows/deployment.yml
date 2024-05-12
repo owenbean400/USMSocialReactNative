@@ -10,6 +10,14 @@ jobs:
       - name: Checkout codebase
         uses: actions/checkout@v4
 
+      - name: Setup Node
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18
+
+      - name: Install Node packages
+        run: npm install
+
       - name: Build and deploy iOS app
         run: fastlane build_deploy_internal_test
         working-directory: ./ios
