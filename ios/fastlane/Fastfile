@@ -22,7 +22,7 @@ platform :ios do
       type: "appstore",
       app_identifier: "com.owenbean.usm",
       git_url: "git@github.com:owenbean400/USMSocialMediaIosAutomation.git",
-      git_private_key: ENV["GITHUB_DEPLOY_KEY"],
+      git_private_key: ENV["DEPLOY_KEY"],
       api_key: {
         key_id: ENV["APPLE_API_KEY_ID"],
         issuer_id: ENV["APPLE_API_ISSUER_ID"],
