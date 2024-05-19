@@ -18,6 +18,17 @@ default_platform(:ios)
 platform :ios do
   desc "Builds and deploys app to internal testing"
   lane :build_deploy_internal_test do
+
+    increment_build_number({
+      build_number: latest_testflight_build_number(
+        api_key: {
+          key_id: ENV["APPLE_API_KEY_ID"],
+          issuer_id: ENV["APPLE_API_ISSUER_ID"],
+          key: ENV["APPLE_API_KEY_CONTENT"],
+          in_house: false
+        }) + 1
+    })
+
     setup_ci
 
     match(
