@@ -21,6 +21,7 @@ platform :ios do
 
     increment_build_number({
       build_number: latest_testflight_build_number(
+        app_identifier: "com.owenbean.usm",
         api_key: {
           key_id: ENV["APPLE_API_KEY_ID"],
           issuer_id: ENV["APPLE_API_ISSUER_ID"],
