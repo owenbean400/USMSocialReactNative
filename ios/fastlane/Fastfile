@@ -18,7 +18,8 @@ default_platform(:ios)
 platform :ios do
   desc "Builds and deploys app to internal testing"
   lane :build_deploy_internal_test do
-    
+    setup_ci
+
     match(
       type: "appstore",
       app_identifier: "com.owenbean.usm",
